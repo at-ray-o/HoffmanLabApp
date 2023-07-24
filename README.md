@@ -5,9 +5,7 @@ Code sample for Hoffman lab application.
 
 Dependency:
 
-Pytorch
-Numpy
-mdtraj
+Pytorch\
+Numpy\
+mdtraj\
 matplotlib
-
-
