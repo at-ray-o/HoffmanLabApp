@@ -224,27 +224,7 @@ def show_images(images, epoch, nmax=9):
     ax.set_xticks([]); ax.set_yticks([])
     ax.imshow(make_grid((images.detach()[:nmax]), nrow=3).permute(1, 2, 0))
 
-def show_batch(dl, nmax=9):
-    for images in dl:
-        #print(np.shape(images))
-        show_images(images, nmax)
-        break
 
-def print_batch(dl, epoch, nmax=3):
-    #show_batch(contacts_dl)
-    save_image(dl.detach()[:nmax], './Vaporwave_Out_Images/Autoencoder_image{}.png'.format(epoch))
-
-def make_dir():
-    image_dir = 'Vaporwave_Out_Images'
-    if not os.path.exists(image_dir):
-        os.makedirs(image_dir)
-
-def save_decod_img(img, epoch):
-    #print(np.shape(img))
-    img = img.view(img.size(0), 1, 64, 64)
-    #print(np.shape(img))
-    #input()
-    save_image(img[0], './Vaporwave_Out_Images/Autoencoder_image{}.png'.format(epoch))
 
 def get_device():
     if torch.cuda.is_available():
@@ -253,7 +233,7 @@ def get_device():
         device = 'cpu'
     return device
 
-def training(model, contacts_dl, f_train, f_test, Epochs, weight_euc, weight_avg, model_dir_save):
+def training(model, contacts_dl, f_train, Epochs, weight_euc, weight_avg, model_dir_save):
     train_loss = []
     test_loss = []
     for epoch in range(Epochs):
@@ -292,8 +272,8 @@ def training(model, contacts_dl, f_train, f_test, Epochs, weight_euc, weight_avg
         test_loss.append(loss_dist)
         print('Epoch {} of {}, Train Loss: {:.3f}'.format(
             epoch+1, Epochs, loss),file=f_train,flush=True)
-        print('Epoch {} of {}, Test Loss: {:.3f}'.format(
-            epoch+1, Epochs, loss_dist),file=f_test,flush=True)
+        # print('Epoch {} of {}, Test Loss: {:.3f}'.format(
+        #     epoch+1, Epochs, loss_dist),file=f_test,flush=True)
 
         if epoch % 2 == 0:
             dummy = outputs.cpu().data
@@ -311,10 +291,8 @@ def run(n_epochs, weight_euc, weight_avg, model_dir_save):
     print('Training Started')
     device = get_device()
     model.to(device)
-    make_dir()
     f_train = open("Lossfile_train.txt", "w")
-    f_test = open("Lossfile_test.txt", "w")
-    train_loss = training(model, contacts_dl, f_train, f_test, n_epochs, weight_euc, weight_avg, model_dir_save)
+    train_loss = training(model, contacts_dl, f_train, n_epochs, weight_euc, weight_avg, model_dir_save)
 
 def evaluation(model, batch_size, contacts_dl,  weight_euc, weight_avg):
     train_loss = []
@@ -373,15 +351,15 @@ if __name__ == '__main__':
     batch_size = 10
     trainStartStruct = 0
     trainEndStruct = 1000
-    model_dir_load = "SavedStateDictionary/2p00Supervised.pth"
-    model_dir_save = "SavedStateDictionary/2p00Supervised.pth"
-    dir = "D:/Work/ContactMapToStructure/LJSimulations/Trajectories/ThetaSolventLD250mers/MdCodeCpp2p00/out/"
+    model_dir_load = "SavedParameters.pth"
+    model_dir_save = "SavedParameters.pth"
+    dir = ""
     CONTACTS_DIR = dir+"DistancesSP.npy"
     print("Loop from top")
     X_train = np.load(CONTACTS_DIR)
     print("Shape of training data: ",X_train.shape)
     print("Data type: ",type(X_train))
-    X_train = X_train[trainStartStruct:trainEndStruct,0:256,0:256,:]
+    X_train = X_train[trainStartStruct:trainEndStruct+1000,0:256,0:256,:]
     rg = np.sum(X_train[:,0:256,0:256,1])/(2*256*256*1000)
     print("rg =",(rg))
     X_train[:,0:256,0:256,0] = np.power(X_train[:,0:256,0:256,0],1.9)
