@@ -12,7 +12,7 @@ matplotlib 3.4.3
 
 ## How to run:
 
-Load a pytorch environment. 
+Load an anaconda pytorch environment.\
 Run the code as ```python DLHoffmanLabSample.py```
 
 ## Outputs:
