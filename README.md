@@ -19,5 +19,6 @@ Run the code as ```python DLHoffmanLabSample.py```
 
 ```Lossfile_train.txt```\
 ```SavedParameters.pth```\
-And a pair of images showing contact maps and distance maps after every two iterations.
+And a pair of images showing contact maps and distance maps after every two iterations, these files are named as follows\
+```Autoencoder_contact<epoch number>.png``` and ```Autoencoder_distance<epoch number>.png```
 
