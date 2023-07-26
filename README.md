@@ -2,7 +2,7 @@
 Code sample for Hoffman lab application.
 
 ## Code description:
-The code trains a U-net autoencoder in a supervised fashion. Both the input and output are part of the ```.npy``` file.
+The code trains a U-net autoencoder in a supervised fashion. Both the input and output are part of the ```.npy``` file, provided in this repository.
 
 ## Dependency:
 
